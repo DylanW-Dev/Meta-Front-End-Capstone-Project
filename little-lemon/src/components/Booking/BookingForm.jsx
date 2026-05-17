@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './BookingForm.css';
 
-const BookingForm = ({ availableTimes, dispatch }) => {
+const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
     const [formData, setFormData] = useState({
         date: '',
         time: '',
@@ -26,7 +26,7 @@ const BookingForm = ({ availableTimes, dispatch }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Booking submitted:', formData);
+        submitForm(formData);
     };
 
     return (
