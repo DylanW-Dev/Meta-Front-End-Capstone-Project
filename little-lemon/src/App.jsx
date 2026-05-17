@@ -8,6 +8,7 @@ import About from './components/About/About';
 import Footer from './components/Footer/Footer';
 import BookingPage from './components/Booking/BookingPage';
 import ConfirmedBooking from './components/Booking/ConfirmedBooking';
+import ComingSoon from './components/ComingSoon/ComingSoon';
 import './App.css';
 
 const HomePage = () => (
@@ -19,26 +20,39 @@ const HomePage = () => (
   </>
 );
 
+const getBookedTimes = (date) => {
+  const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+  return bookings
+    .filter(b => b.date === date)
+    .map(b => b.time);
+};
+
 const initializeTimes = () => {
-  if (typeof window.fetchAPI === 'function') {
-    return window.fetchAPI(new Date());
-  }
-  return ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const allTimes = typeof window.fetchAPI === 'function'
+    ? window.fetchAPI(today)
+    : ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+
+  const booked = getBookedTimes(todayStr);
+  return allTimes.filter(t => !booked.includes(t));
 };
 
 const updateTimes = (state, action) => {
   switch (action.type) {
-    case 'UPDATE_TIMES':
-      if (typeof window.fetchAPI === 'function') {
-        return window.fetchAPI(new Date(action.payload));
-      }
-      return state;
+    case 'UPDATE_TIMES': {
+      const allTimes = typeof window.fetchAPI === 'function'
+        ? window.fetchAPI(new Date(action.payload))
+        : ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+
+      const booked = getBookedTimes(action.payload);
+      return allTimes.filter(t => !booked.includes(t));
+    }
     default:
       return state;
   }
 };
 
-// Separate inner component so useNavigate works inside Router
 const AppRoutes = () => {
   const navigate = useNavigate();
   const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
@@ -47,19 +61,17 @@ const AppRoutes = () => {
     if (typeof window.submitAPI === 'function') {
       const result = window.submitAPI(formData);
       if (result) {
-        // Save to localStorage
         const existing = JSON.parse(localStorage.getItem('bookings') || '[]');
         existing.push(formData);
         localStorage.setItem('bookings', JSON.stringify(existing));
-
+        dispatch({ type: 'UPDATE_TIMES', payload: formData.date });
         navigate('/confirmed');
       }
     } else {
-      // Fallback if API not available
       const existing = JSON.parse(localStorage.getItem('bookings') || '[]');
       existing.push(formData);
       localStorage.setItem('bookings', JSON.stringify(existing));
-
+      dispatch({ type: 'UPDATE_TIMES', payload: formData.date });
       navigate('/confirmed');
     }
   };
@@ -78,6 +90,10 @@ const AppRoutes = () => {
         }
       />
       <Route path="/confirmed" element={<ConfirmedBooking />} />
+      <Route path="/about" element={<ComingSoon pageName="About" />} />
+      <Route path="/menu" element={<ComingSoon pageName="Menu" />} />
+      <Route path="/order" element={<ComingSoon pageName="Order Online" />} />
+      <Route path="/login" element={<ComingSoon pageName="Login" />} />
     </Routes>
   );
 };
