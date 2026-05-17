@@ -69,6 +69,21 @@
 
     .about-images {
         width: 100%;
-        height: 300px;
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        position: static;
+        margin-bottom: 20px;
+        border: 4px solid var(--primary-yellow);
     }
+
+    .about-img {
+        width: 100%;
+        height: 200px;
+        position: static;
+        border: none;
+        border-radius: 0px;
+    }
+
 }
