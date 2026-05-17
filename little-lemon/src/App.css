@@ -1,0 +1,23 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--primary-yellow: #F4CE14;
+	--primary-green: #495E57;
+	--highlight-orange: #EE9972;
+	--highlight-light: #FBDABB;
+	--secondary-light: #EDEFEE;
+	--secondary-dark: #333333;
+	--font-primary: 'Markazi Text', serif;
+	--font-secondary: 'Karla', sans-serif;
+}
+
+body {
+	font-family: var(--font-secondary);
+	color: var(--secondary-dark);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400;500&family=Karla:wght@400;500;700&display=swap');
