@@ -1,0 +1,87 @@
+.confirmed-booking {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+}
+
+.confirmed-booking__card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    padding: 3rem 2.5rem;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+}
+
+.confirmed-booking__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.confirmed-booking__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #495E57;
+    margin-bottom: 0.75rem;
+}
+
+.confirmed-booking__subtitle {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.confirmed-booking__brand {
+    color: #495E57;
+    font-weight: 700;
+}
+
+.confirmed-booking__divider {
+    border: none;
+    border-top: 2px solid #F4CE14;
+    margin: 1.5rem 0;
+}
+
+/* Buttons */
+.confirmed-booking__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: inline-block;
+}
+
+.btn--primary {
+    background-color: #F4CE14;
+    color: #333333;
+}
+
+.btn--primary:hover {
+    background-color: #e0b800;
+    transform: translateY(-1px);
+}
+
+.btn--secondary {
+    background-color: #495E57;
+    color: #ffffff;
+}
+
+.btn--secondary:hover {
+    background-color: #3a4d47;
+    transform: translateY(-1px);
+}

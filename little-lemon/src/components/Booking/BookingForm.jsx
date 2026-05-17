@@ -10,13 +10,46 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
         occasion: ''
     });
 
+    const [errors, setErrors] = useState({});
+
+    const validate = (name, value) => {
+        switch (name) {
+            case 'date':
+                if (!value) return 'Please select a date.';
+                if (new Date(value) < new Date().setHours(0, 0, 0, 0))
+                    return 'Date cannot be in the past.';
+                return '';
+            case 'time':
+                if (!value) return 'Please select a time.';
+                return '';
+            case 'guests':
+                if (!value || value < 1) return 'At least 1 guest is required.';
+                if (value > 10) return 'Maximum 10 guests allowed.';
+                return '';
+            default:
+                return '';
+        }
+    };
+
+    const isFormValid = () => {
+        return (
+            formData.date &&
+            formData.time &&
+            formData.guests >= 1 &&
+            formData.guests <= 10 &&
+            Object.values(errors).every(e => e === '')
+        );
+    };
+
     const handleChange = (e) => {
         const { id, value } = e.target;
 
-        // When date changes, dispatch to update available times
         if (id === 'date') {
             dispatch({ type: 'UPDATE_TIMES', payload: value });
         }
+
+        const error = validate(id, value);
+        setErrors(prev => ({ ...prev, [id]: error }));
 
         setFormData(prev => ({
             ...prev,
@@ -26,11 +59,21 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        submitForm(formData);
+
+        // Final validation pass
+        const newErrors = {};
+        Object.keys(formData).forEach(key => {
+            newErrors[key] = validate(key, formData[key]);
+        });
+        setErrors(newErrors);
+
+        if (Object.values(newErrors).every(e => e === '')) {
+            submitForm(formData);
+        }
     };
 
     return (
-        <form className="booking-form" onSubmit={handleSubmit} aria-label="Reservation Form">
+        <form className="booking-form" onSubmit={handleSubmit} aria-label="Reservation Form" noValidate>
 
             <label htmlFor="date">Choose date</label>
             <input
@@ -38,9 +81,12 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
                 id="date"
                 value={formData.date}
                 onChange={handleChange}
+                min={new Date().toISOString().split('T')[0]}
                 required
                 aria-required="true"
+                aria-describedby="date-error"
             />
+            {errors.date && <span id="date-error" className="error">{errors.date}</span>}
 
             <label htmlFor="time">Choose time</label>
             <select
@@ -49,12 +95,14 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
                 onChange={handleChange}
                 required
                 aria-required="true"
+                aria-describedby="time-error"
             >
                 <option value="">-- Select a time --</option>
                 {availableTimes.map(time => (
                     <option key={time} value={time}>{time}</option>
                 ))}
             </select>
+            {errors.time && <span id="time-error" className="error">{errors.time}</span>}
 
             <label htmlFor="guests">Number of guests</label>
             <input
@@ -66,7 +114,9 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
                 onChange={handleChange}
                 required
                 aria-required="true"
+                aria-describedby="guests-error"
             />
+            {errors.guests && <span id="guests-error" className="error">{errors.guests}</span>}
 
             <label htmlFor="occasion">Occasion</label>
             <select
@@ -84,6 +134,7 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
                 type="submit"
                 className="btn-primary"
                 aria-label="Submit reservation"
+                disabled={!isFormValid()}
             >
                 Reserve a Table
             </button>

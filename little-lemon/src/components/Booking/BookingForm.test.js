@@ -82,3 +82,153 @@ test('updateTimes returns available times for a selected date', () => {
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeGreaterThan(0);
 });
+
+// Attribute Tests
+describe('HTML5 Validation Attributes', () => {
+
+    test('date input has required and min attributes', () => {
+        renderBookingForm();
+        const dateInput = screen.getByLabelText('Choose date');
+        expect(dateInput).toHaveAttribute('required');
+        expect(dateInput).toHaveAttribute('min');
+    });
+
+    test('time select has required attribute', () => {
+        renderBookingForm();
+        const timeSelect = screen.getByLabelText('Choose time');
+        expect(timeSelect).toHaveAttribute('required');
+    });
+
+    test('guests input has required, min="1" and max="10" attributes', () => {
+        renderBookingForm();
+        const guestsInput = screen.getByLabelText('Number of guests');
+        expect(guestsInput).toHaveAttribute('required');
+        expect(guestsInput).toHaveAttribute('min', '1');
+        expect(guestsInput).toHaveAttribute('max', '10');
+    });
+
+});
+
+// JavaScript Validation Tests for Date
+describe('Date field validation', () => {
+
+    test('shows error when date is empty', () => {
+        renderBookingForm();
+        const dateInput = screen.getByLabelText('Choose date');
+        // First set a value, then clear it to trigger validation
+        fireEvent.change(dateInput, { target: { id: 'date', value: '2099-12-31' } });
+        fireEvent.change(dateInput, { target: { id: 'date', value: '' } });
+        fireEvent.blur(dateInput);
+        expect(screen.getByText(/please select a date/i)).toBeInTheDocument();
+    });
+
+    test('shows error when date is in the past', () => {
+        renderBookingForm();
+        const dateInput = screen.getByLabelText('Choose date');
+        fireEvent.change(dateInput, { target: { id: 'date', value: '2000-01-01' } });
+        fireEvent.blur(dateInput);
+        expect(screen.getByText(/date cannot be in the past/i)).toBeInTheDocument();
+    });
+
+    test('shows no error when date is valid', () => {
+        renderBookingForm();
+        const dateInput = screen.getByLabelText('Choose date');
+        fireEvent.change(dateInput, { target: { id: 'date', value: '2099-12-31' } });
+        fireEvent.blur(dateInput);
+        expect(screen.queryByText(/please select a date/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/date cannot be in the past/i)).not.toBeInTheDocument();
+    });
+
+});
+
+// JavaScript Validation Tests for Time
+describe('Time field validation', () => {
+
+    test('shows error when time is not selected', () => {
+        renderBookingForm();
+        const timeSelect = screen.getByLabelText('Choose time');
+        fireEvent.change(timeSelect, { target: { id: 'time', value: '' } });
+        fireEvent.blur(timeSelect);
+        expect(screen.getByText(/please select a time/i)).toBeInTheDocument();
+    });
+
+    test('shows no error when time is selected', () => {
+        renderBookingForm();
+        const timeSelect = screen.getByLabelText('Choose time');
+        fireEvent.change(timeSelect, { target: { id: 'time', value: '18:00' } });
+        fireEvent.blur(timeSelect);
+        expect(screen.queryByText(/please select a time/i)).not.toBeInTheDocument();
+    });
+
+});
+
+// Validation Tests for Guests
+describe('Guests field validation', () => {
+
+    test('shows error when guests is below 1', () => {
+        renderBookingForm();
+        const guestsInput = screen.getByLabelText('Number of guests');
+        fireEvent.change(guestsInput, { target: { id: 'guests', value: '0' } });
+        fireEvent.blur(guestsInput);
+        expect(screen.getByText(/at least 1 guest is required/i)).toBeInTheDocument();
+    });
+
+    test('shows error when guests exceeds 10', () => {
+        renderBookingForm();
+        const guestsInput = screen.getByLabelText('Number of guests');
+        fireEvent.change(guestsInput, { target: { id: 'guests', value: '11' } });
+        fireEvent.blur(guestsInput);
+        expect(screen.getByText(/maximum 10 guests allowed/i)).toBeInTheDocument();
+    });
+
+    test('shows no error when guests is valid', () => {
+        renderBookingForm();
+        const guestsInput = screen.getByLabelText('Number of guests');
+        fireEvent.change(guestsInput, { target: { id: 'guests', value: '4' } });
+        fireEvent.blur(guestsInput);
+        expect(screen.queryByText(/at least 1 guest is required/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/maximum 10 guests allowed/i)).not.toBeInTheDocument();
+    });
+
+});
+
+// Form Submission Validation Tests
+describe('Form submission validation', () => {
+
+    // Button aria-label is "Submit reservation" not "Reserve a Table"
+    test('submit button is disabled when form is empty', () => {
+        renderBookingForm();
+        const button = screen.getByRole('button', { name: /submit reservation/i });
+        expect(button).toBeDisabled();
+    });
+
+    test('submit button is enabled when required fields are valid', () => {
+        renderBookingForm();
+        fireEvent.change(screen.getByLabelText('Choose date'),
+            { target: { id: 'date', value: '2099-12-31' } });
+        fireEvent.change(screen.getByLabelText('Choose time'),
+            { target: { id: 'time', value: '18:00' } });
+        fireEvent.change(screen.getByLabelText('Number of guests'),
+            { target: { id: 'guests', value: '4' } });
+        const button = screen.getByRole('button', { name: /submit reservation/i });
+        expect(button).toBeEnabled();
+    });
+
+    test('submitForm is called with correct data on valid submission', () => {
+        renderBookingForm();
+        fireEvent.change(screen.getByLabelText('Choose date'),
+            { target: { id: 'date', value: '2099-12-31' } });
+        fireEvent.change(screen.getByLabelText('Choose time'),
+            { target: { id: 'time', value: '18:00' } });
+        fireEvent.change(screen.getByLabelText('Number of guests'),
+            { target: { id: 'guests', value: '4' } });
+        fireEvent.click(screen.getByRole('button', { name: /submit reservation/i }));
+        expect(mockSubmitForm).toHaveBeenCalledWith({
+            date: '2099-12-31',
+            time: '18:00',
+            guests: '4',
+            occasion: ''
+        });
+    });
+
+});
