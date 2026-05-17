@@ -1,15 +1,14 @@
-````markdown
 # Little Lemon Restaurant — Meta Front-End Developer Capstone
 
 ![Little Lemon](./little-lemon/src/assets/images/logo.png)
 
-A responsive restaurant web application built as the **capstone project** for the [Meta Front-End Developer Professional Certificate](https://www.coursera.org/professional-certificates/meta-front-end-developer) on Coursera.
+A responsive restaurant web application built as the capstone project for the [Meta Front-End Developer Professional Certificate](https://www.coursera.org/professional-certificates/meta-front-end-developer) on Coursera.
 
 ---
 
 ## Live Demo
 
-> _Coming soon / Deploy link here_
+> Coming soon
 
 ---
 
@@ -29,34 +28,36 @@ A responsive restaurant web application built as the **capstone project** for th
 
 ## About the Project
 
-Little Lemon is a fictional Chicago-based Mediterranean restaurant. This project demonstrates core Front-End development skills including:
+Little Lemon is a fictional Chicago-based Mediterranean restaurant. This capstone project demonstrates practical front-end development skills acquired throughout the Meta certification program, including component-based architecture, client-side routing, controlled form handling, state management, and unit testing.
 
-- Component-based UI with **React**
-- Client-side routing with **React Router**
-- Controlled form components with **validation**
+Key concepts covered:
+
+- Component-based UI with React
+- Client-side routing with React Router
+- Controlled form components with validation
 - State management with `useReducer` and `localStorage` persistence
-- Unit testing with **Jest** and **React Testing Library**
-- Responsive design with **CSS**
+- Unit testing with Jest and React Testing Library
+- Responsive design with CSS
 
 ---
 
 ## Features
 
-- Responsive Navbar with mobile hamburger menu
-- Hero section with call-to-action
-- Specials section (food cards)
+- Responsive navigation bar with a mobile hamburger menu
+- Hero section with a call-to-action
+- Specials section displaying food cards
 - Testimonials section
 - About section
-- Table Reservation system with:
-  - Date, time, guests and occasion fields
+- Table reservation system including:
+  - Date, time, guests, and occasion fields
   - Real-time JavaScript field validation
   - HTML5 validation attributes
-  - Dynamic available times via `fetchAPI`
-  - `localStorage` persistence
-  - Submit button enabled/disabled based on form validity
+  - Dynamic available time slots via `fetchAPI`
+  - `localStorage` persistence for available times
+  - Submit button state tied to overall form validity
   - Confirmation page on successful booking
-- Coming Soon pages for Menu, Order Online and Login
-- Footer with navigation, contact and social links
+- Placeholder pages for Menu, Order Online, and Login
+- Footer with navigation links, contact information, and social links
 
 ---
 
@@ -69,7 +70,7 @@ Little Lemon is a fictional Chicago-based Mediterranean restaurant. This project
 | CSS3 | Styling and responsive layout |
 | Jest | Test runner |
 | React Testing Library | Component testing |
-| localStorage | Time slots persistence |
+| localStorage | Time slot persistence |
 | fetchAPI (mocked) | Dynamic available times |
 
 ---
@@ -85,30 +86,15 @@ Meta-Front-End-Capstone-Project/
 │   ├── src/
 │   │   ├── assets/
 │   │   │   └── images/
-│   │   │       ├── angelo.jpg
-│   │   │       ├── bruschetta.jpg
-│   │   │       ├── chef-prepping.jpg
-│   │   │       ├── grace.jpg
-│   │   │       ├── greek-salad.jpg
-│   │   │       ├── hero-food.jpg
-│   │   │       ├── lemon-dessert.jpg
-│   │   │       ├── logo-white.png
-│   │   │       ├── logo.png
-│   │   │       ├── maria.jpg
-│   │   │       ├── mish.jpg
-│   │   │       ├── owner.jpg
-│   │   │       └── restaurant.jpg
 │   │   ├── components/
 │   │   │   ├── About/
 │   │   │   ├── Booking/
-│   │   │   │   ├── bookingUtils.js       # initializeTimes + updateTimes
-│   │   │   │   ├── BookingForm.jsx       # Controlled form + validation
-│   │   │   │   ├── BookingForm.test.js   # All unit tests
-│   │   │   │   ├── BookingPage.jsx       # Page wrapper + useReducer
-│   │   │   │   └── ConfirmationPage.jsx  # Post-submission confirmation
+│   │   │   │   ├── bookingUtils.js       # initializeTimes and updateTimes logic
+│   │   │   │   ├── BookingForm.jsx       # Controlled form with validation
+│   │   │   │   ├── BookingForm.test.js   # Unit tests
+│   │   │   │   ├── BookingPage.jsx       # Page wrapper with useReducer
+│   │   │   │   └── ConfirmationPage.jsx  # Post-submission confirmation view
 │   │   │   ├── ComingSoon/
-│   │   │   │   ├── ComingSoon.jsx
-│   │   │   │   └── ComingSoon.css
 │   │   │   ├── Footer/
 │   │   │   ├── Hero/
 │   │   │   ├── Navbar/
@@ -121,7 +107,8 @@ Meta-Front-End-Capstone-Project/
 │   ├── .gitignore
 │   ├── package.json
 │   └── package-lock.json
-└── UI : UX Research/
+├── Screenshots/
+└── UI-UX Research/
 ```
 
 ---
@@ -130,16 +117,16 @@ Meta-Front-End-Capstone-Project/
 
 ### Prerequisites
 
-- Node.js `v16+`
-- npm `v8+`
+- Node.js `v16` or higher
+- npm `v8` or higher
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/Meta-Front-End-Capstone-Project.git
+git clone https://github.com/DylanW-Dev/Meta-Front-End-Capstone-Project.git
 
-# Navigate into the project
+# Navigate into the project directory
 cd Meta-Front-End-Capstone-Project/little-lemon
 
 # Install dependencies
@@ -149,7 +136,7 @@ npm install
 npm start
 ```
 
-The app will open at **http://localhost:3000**
+The application will be available at `http://localhost:3000`.
 
 ---
 
@@ -159,41 +146,30 @@ The app will open at **http://localhost:3000**
 npm test
 ```
 
-To run with coverage:
+To run tests with a coverage report:
 
 ```bash
 npm test -- --coverage
 ```
 
+All tests are located in `src/components/Booking/BookingForm.test.js`.
+
 ---
 
 ## Test Coverage
 
-All tests are located in `src/components/Booking/BookingForm.test.js`
-
-| Category | Tests |
+| Category | What is tested |
 |---|---|
-| localStorage persistence | `initializeTimes` reads from storage, falls back to default, `updateTimes` writes to storage |
-| Static rendering | Submit button text, all form labels present |
-| bookingUtils | Returns non-empty array, updates times for selected date |
-| HTML5 attributes | `required`, `min`, `max` on all inputs |
-| Date validation | Empty, past date, valid date |
-| Time validation | Not selected, valid selection |
-| Guests validation | Below 1, above 10, valid value |
-| Form submission | Button disabled when empty, enabled when valid, `submitForm` called with correct data |
+| localStorage persistence | `initializeTimes` reads from storage and falls back to a default; `updateTimes` writes to storage |
+| Static rendering | Submit button label, presence of all form field labels |
+| bookingUtils | Returns a non-empty array; updates available times for a selected date |
+| HTML5 attributes | `required`, `min`, and `max` attributes on all relevant inputs |
+| Date validation | Empty value, past date, valid date |
+| Time validation | No selection, valid selection |
+| Guests validation | Value below minimum, value above maximum, valid value |
+| Form submission | Button disabled when form is incomplete; button enabled when form is valid; `submitForm` called with the correct data |
 
 **Total: 22 unit tests**
-
----
-
-## Screenshots
-
-| Page | Preview |
-|---|---|
-| Home | ![hero](image.png) |
-![specials](image.png)
-| Reservation | ![reservation](image-1.png) |
-| Confirmation | ![success](image-2.png) |
 
 ---
 
@@ -205,11 +181,8 @@ This project is licensed under the terms of the [LICENSE](./LICENSE) file includ
 
 ## Certificate
 
-Built as the final capstone for the  
-**[Meta Front-End Developer Professional Certificate](https://www.coursera.org/professional-certificates/meta-front-end-developer)**  
-on Coursera.
+Built as the final capstone project for the [Meta Front-End Developer Professional Certificate](https://www.coursera.org/professional-certificates/meta-front-end-developer) on Coursera.
 
 ---
 
-> Designed and developed by DylanW (https://github.com/DylanW-Dev)
-````
+Developed by [DylanW](https://github.com/DylanW-Dev)
