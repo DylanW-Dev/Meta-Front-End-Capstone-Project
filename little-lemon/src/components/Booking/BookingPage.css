@@ -1,0 +1,23 @@
+.booking-page {
+    background-color: var(--secondary-light);
+    padding: 80px 0;
+    min-height: 100vh;
+}
+
+.booking-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.booking-container h1 {
+    font-family: var(--font-primary);
+    font-size: 48px;
+    color: var(--primary-green);
+    margin-bottom: 8px;
+}
+
+.booking-container p {
+    color: var(--secondary-dark);
+    margin-bottom: 32px;
+}
