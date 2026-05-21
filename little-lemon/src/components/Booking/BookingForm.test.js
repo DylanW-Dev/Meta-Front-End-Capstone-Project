@@ -52,6 +52,8 @@ test('Renders the submit button with correct text', () => {
 
 test('Renders all form labels', () => {
     renderBookingForm();
+    expect(screen.getByText('First Name')).toBeInTheDocument();
+    expect(screen.getByText('Last Name')).toBeInTheDocument();
     expect(screen.getByText('Choose date')).toBeInTheDocument();
     expect(screen.getByText('Choose time')).toBeInTheDocument();
     expect(screen.getByText('Number of guests')).toBeInTheDocument();
@@ -61,6 +63,8 @@ test('Renders all form labels', () => {
 // Form Submission Test
 test('Form can be submitted by the user', () => {
     renderBookingForm();
+    fireEvent.change(screen.getByLabelText('First Name'), { target: { value: 'John' } });
+    fireEvent.change(screen.getByLabelText('Last Name'), { target: { value: 'Doe' } });
     fireEvent.change(screen.getByLabelText('Choose date'), { target: { value: '2025-06-20' } });
     fireEvent.change(screen.getByLabelText('Choose time'), { target: { value: '18:00' } });
     fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '3' } });
@@ -85,6 +89,17 @@ test('updateTimes returns available times for a selected date', () => {
 
 // Attribute Tests
 describe('HTML5 Validation Attributes', () => {
+    test('first name input has required attribute', () => {
+        renderBookingForm();
+        const firstNameInput = screen.getByLabelText('First Name');
+        expect(firstNameInput).toHaveAttribute('required');
+    });
+
+    test('last name input has required attribute', () => {
+        renderBookingForm();
+        const lastNameInput = screen.getByLabelText('Last Name');
+        expect(lastNameInput).toHaveAttribute('required');
+    });
 
     test('date input has required and min attributes', () => {
         renderBookingForm();
@@ -204,6 +219,10 @@ describe('Form submission validation', () => {
 
     test('submit button is enabled when required fields are valid', () => {
         renderBookingForm();
+        fireEvent.change(screen.getByLabelText('First Name'),
+            { target: { id: 'firstName', value: 'John' } });
+        fireEvent.change(screen.getByLabelText('Last Name'),
+            { target: { id: 'lastName', value: 'Doe' } });
         fireEvent.change(screen.getByLabelText('Choose date'),
             { target: { id: 'date', value: '2099-12-31' } });
         fireEvent.change(screen.getByLabelText('Choose time'),
@@ -216,6 +235,10 @@ describe('Form submission validation', () => {
 
     test('submitForm is called with correct data on valid submission', () => {
         renderBookingForm();
+        fireEvent.change(screen.getByLabelText('First Name'),
+            { target: { id: 'firstName', value: 'John' } });
+        fireEvent.change(screen.getByLabelText('Last Name'),
+            { target: { id: 'lastName', value: 'Doe' } });
         fireEvent.change(screen.getByLabelText('Choose date'),
             { target: { id: 'date', value: '2099-12-31' } });
         fireEvent.change(screen.getByLabelText('Choose time'),
@@ -224,6 +247,8 @@ describe('Form submission validation', () => {
             { target: { id: 'guests', value: '4' } });
         fireEvent.click(screen.getByRole('button', { name: /submit reservation/i }));
         expect(mockSubmitForm).toHaveBeenCalledWith({
+            firstName: 'John',
+            lastName: 'Doe',
             date: '2099-12-31',
             time: '18:00',
             guests: '4',

@@ -33,6 +33,8 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
 
     const isFormValid = () => {
         return (
+            formData.firstName &&
+            formData.lastName &&
             formData.date &&
             formData.time &&
             formData.guests >= 1 &&
@@ -74,6 +76,26 @@ const BookingForm = ({ availableTimes, dispatch, submitForm }) => {
 
     return (
         <form className="booking-form" onSubmit={handleSubmit} aria-label="Reservation Form" noValidate>
+
+            <label htmlFor="firstName">First Name</label>
+            <input
+                type="text"
+                id="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                aria-required="true"
+            />
+
+            <label htmlFor="lastName">Last Name</label>
+            <input
+                type="text"
+                id="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                aria-required="true"
+            />
 
             <label htmlFor="date">Choose date</label>
             <input
