@@ -169,7 +169,7 @@ All tests are located in `src/components/Booking/BookingForm.test.js`.
 | Guests validation | Value below minimum, value above maximum, valid value |
 | Form submission | Button disabled when form is incomplete; button enabled when form is valid; `submitForm` called with the correct data |
 
-**Total: 22 unit tests**
+**Total: 24 unit tests**
 
 ---
 
